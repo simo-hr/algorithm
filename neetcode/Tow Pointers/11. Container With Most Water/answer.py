@@ -10,18 +10,17 @@
 #         return max_area
 
 
-class Solution:
-    def maxArea(self, height: List[int]) -> int:
-        l = 0
-        r = len(height) - 1
-        res = 0
-        while l < r:
-            area = (r - l) * min(height[l], height[r])
-            print(area)
-            res = max(res, area)
-            if(height[l] <= height[r]):
-                l += 1
-            elif(height[r] < height[l]):
-                r -= 1
+inputs = input()
+n = int(inputs[0])
+nums = list(map(int, inputs[1:]))
+print(n, nums)
 
-        return res
+min = -100000000000
+max = 0
+
+for i in range(n):
+    for j in range(n - i - 1):
+        index = i + j + 1
+        area = (j + 1) * min(nums[i], nums[index])
+        max = max(max, area)
+print(max)
