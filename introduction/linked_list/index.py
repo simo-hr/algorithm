@@ -36,6 +36,7 @@ class LinkedList(object):
     def remove(self, data: Any) -> Node:
         if self.head == data:
             self.head = self.head.next
+            return
 
         previous_node = self.head
         current_node = self.head.next
@@ -43,21 +44,51 @@ class LinkedList(object):
             if current_node.data == data:
                 previous_node.next = current_node.next
                 current_node = None
-                break
-            else:
-                previous_node = current_node
-                current_node = current_node.next
+                return
+            previous_node = current_node
+            current_node = current_node.next
+
+    def reverse_iterative(self) -> Node:
+        previous_node = None
+        current_node = self.head
+        while current_node:
+            next_node = current_node.next
+            current_node.next = previous_node
+
+            previous_node = current_node
+            current_node = next_node
+        self.head = previous_node
+
+    def reverse_recursive(self) -> Node:
+        def _reverse_recursive(current_node: Node | None, previous_node: Node | None):
+            if not current_node:
+                return previous_node
+            next_node = current_node.next
+            current_node.next = previous_node
+            previous_node = current_node
+            current_node = next_node
+            return _reverse_recursive(current_node, previous_node)
+
+        self.head = _reverse_recursive(self.head, None)
 
 
 if __name__ == "__main__":
     l = LinkedList()
+    l.insert(0)
     l.append(1)
     l.append(2)
-    l.append(2)
     l.append(3)
-    l.insert(0)
+    l.append(4)
+    l.append(5)
+    l.append(6)
     l.print()
-    l.remove(2)
-    l.remove(8)
-    print("#############")
+    print("########")
+    l.reverse_iterative()
     l.print()
+    print("########")
+    l.reverse_recursive()
+    l.print()
+
+    # l.remove(2)
+    # l.remove(8)
+    # l.print()
