@@ -3,35 +3,32 @@ from typing import List, NewType
 IndexNum = NewType("IndexNum", int)
 
 
-def binary_search(numbers: List[int], value: int) -> IndexNum:
-    left, right = 0, len(numbers) - 1
+def binary_search(nums: List[int], value: int) -> IndexNum:
+    left, right = 0, len(nums) - 1
     while left <= right:
-        mid = (right + left) // 2
-        print(left, mid, right)
-        if numbers[mid] == value:
-            return mid
-        elif value > numbers[mid]:
-            left = mid + 1
+        center = (left + right) // 2
+        if value == nums[center]:
+            return center
+        elif value <= nums[center]:
+            right = center - 1
         else:
-            right = mid - 1
+            left = center + 1
     return -1
 
 
-def binary_search_recursive(numbers: List[int], value: int) -> IndexNum:
-    def _binary_search(numbers: List[int], left, right) -> IndexNum:
+def binary_search_recursive(nums: List[int], value: int) -> IndexNum:
+    def _binary_search(left: int, right: int) -> IndexNum:
         if left > right:
             return -1
-        mid = (right + left) // 2
-        if numbers[mid] == value:
-            return mid
-        elif value > numbers[mid]:
-            left = mid + 1
-            return _binary_search(numbers, left, right)
+        center = (left + right) // 2
+        if value == nums[center]:
+            return center
+        elif value <= nums[center]:
+            return _binary_search(left, center - 1)
         else:
-            right = mid - 1
-            return _binary_search(numbers, left, right)
+            return _binary_search(center + 1, right)
 
-    return _binary_search(numbers, 0, len(numbers) - 1)
+    return _binary_search(0, len(nums) - 1)
 
 
 if __name__ == "__main__":
