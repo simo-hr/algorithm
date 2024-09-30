@@ -49,39 +49,65 @@ class LinkedList(object):
             current_node = current_node.next
 
     def reverse_iterative(self) -> Node:
-        cur = self.head
-        prev = None
-        while cur:
-            cur_next = cur.next
-            cur.next = prev
+        previous_node = None
+        current_node = self.head
+        while current_node:
+            next_node = current_node.next
+            current_node.next = previous_node
 
-            prev = cur
-            cur = cur_next
-            print("a")
-        self.head = prev
+            previous_node = current_node
+            current_node = next_node
+        self.head = previous_node
 
     def reverse_recursive(self) -> Node:
-        def _reverse_recursive(prev, cur):
-            if cur is None:
-                return prev
-            cur_next = cur.next
-            cur.next = prev
-            return _reverse_recursive(cur, cur_next)
+        def _reverse_recursive(current_node: Node | None, previous_node: Node | None):
+            if not current_node:
+                return previous_node
+            next_node = current_node.next
+            current_node.next = previous_node
+            previous_node = current_node
+            current_node = next_node
+            return _reverse_recursive(current_node, previous_node)
 
-        self.head = _reverse_recursive(None, self.head)
+        self.head = _reverse_recursive(self.head, None)
+
+    def reverse_even(self) -> Node:
+        def _reverse_even(head, prev):
+            if head is None:
+                return None
+
+            cur = head
+            while cur and cur.data % 2 == 0:
+                cur_next = cur.next
+                cur.next = prev
+                prev = cur
+                cur = cur_next
+
+            if cur != head:
+
+                head.next = cur
+                _reverse_even(cur, None)
+                return prev
+            else:
+                head.next = _reverse_even(head.next, head)
+                return head
+
+        self.head = _reverse_even(self.head, None)
 
 
 if __name__ == "__main__":
     l = LinkedList()
+    l.append(1)
+    # l.append(3)
     l.append(2)
     l.append(4)
     l.append(6)
-    l.append(1)
-    l.append(3)
+    # l.append(1)
+    # l.append(4)
+    # l.append(6)
     l.print()
     print("########")
-    # l.reverse_iterative()
-    l.reverse_iterative()
+    l.reverse_even()
     l.print()
 
     # l.remove(2)
