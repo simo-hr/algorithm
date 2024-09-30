@@ -1,31 +1,32 @@
 from typing import List
 
 
-def partition(numbers: List[int], low: int, high: int) -> int:
+def partition(nums: List[int], low: int, high: int) -> int:
     i = low - 1
-    pivot = numbers[high]
+    pivot_num = nums[high]
     for j in range(low, high):
-        if numbers[j] <= pivot:
+        if nums[j] <= pivot_num:
             i += 1
-            numbers[i], numbers[j] = numbers[j], numbers[i]
-    numbers[i + 1], numbers[high] = numbers[high], numbers[i + 1]
+            nums[i], nums[j] = nums[j], nums[i]
+    nums[high], nums[i + 1] = nums[i + 1], nums[high]
     return i + 1
 
 
-def quick_sort(numbers: List[int]) -> List[int]:
-    def _quick_sort(numbers: List[int], low: int, high: int) -> None:
+def quick_sort(nums: List[int]) -> List[int]:
+    def _quick_sort(nums: List[int], low: int, high: int) -> None:
         if low < high:
-            partition_index = partition(numbers, low, high)
-            _quick_sort(numbers, low, partition_index - 1)
-            _quick_sort(numbers, partition_index + 1, high)
+            pivot_index = partition(nums, low, high)
+            _quick_sort(nums, low, pivot_index - 1)
+            _quick_sort(nums, pivot_index + 1, high)
 
-    _quick_sort(numbers, 0, len(numbers) - 1)
-    return numbers
+    _quick_sort(nums, 0, len(nums) - 1)
+    return nums
 
 
 if __name__ == "__main__":
     import random
 
     # nums = [1, 8, 3, 9, 4, 5, 7]
-    nums = [random.randint(0, 1000) for _ in range(10)]
+    nums = [1, 8, 3, 9, 4, 5, 7]
+    # nums = [random.randint(0, 1000) for _ in range(10)]
     print(quick_sort(nums))
