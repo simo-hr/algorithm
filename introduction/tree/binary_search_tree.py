@@ -41,6 +41,33 @@ def search(node: Optional[Node], value: int) -> bool:
         return search(node.right, value)
 
 
+def min_value(node: Node) -> Node:
+    current = node
+    while node.left is not None:
+        current = node.left
+    return current
+
+
+def remove(node: Optional[Node], value: int) -> Node:
+    if node is None:
+        return node
+
+    if value < node.value:
+        node.left = remove(node.left, value)
+    elif value > node.value:
+        node.right = remove(node.right, value)
+    else:  # 一致した場合
+        if node.left is None:
+            return node.right
+        elif node.right is None:
+            return node.left
+
+        tmp = min_value(node.right)
+        node.value = tmp.value
+        node.right = remove(node.right, tmp.value)
+    return node
+
+
 if __name__ == "__main__":
     root = None
     root = insert(root, 3)
@@ -50,4 +77,7 @@ if __name__ == "__main__":
     root = insert(root, 1)
     root = insert(root, 10)
     root = insert(root, 2)
-    print(search(root, 7))
+    inorder(root)
+    print("################")
+    root = remove(root, 6)
+    inorder(root)
